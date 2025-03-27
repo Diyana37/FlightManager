@@ -1,0 +1,46 @@
+﻿@model IEnumerable<FlightBasicViewModel>
+
+@{
+    this.ViewData["Title"] = "All Flights";
+}
+
+<h1 class="text-center">Flights</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Departure</th>
+            <th scope="col">Landing</th>
+            <th scope="col">Type</th>
+            <th scope="col">Flight ID</th>
+            <th scope="col">Pilot</th>
+            <th scope="col">Standard Capacity</th>
+            <th scope="col">Business Capacity</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var flight in this.Model)
+        {
+            <tr>
+                <td>@flight.Id</td>
+                <td>@flight.From</td>
+                <td>@flight.To</td>
+                <td>@flight.DepartureAt.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@flight.LandAt.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@flight.Type</td>
+                <td>@flight.UniqieId</td>
+                <td>@flight.PilotName</td>
+                <td>@flight.CapacityStandard</td>
+                <td>@flight.CapacityBusiness</td>
+                <td>
+                    <a asp-controller="Flights" asp-action="Delete" asp-route-id="@flight.Id" class="btn btn-danger">Delete</a>
+                    <a asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.Id" class="btn btn-warning">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,18 @@
+﻿@model CreateReservationInputModel
+
+@{
+    this.ViewData["Title"] = "Create Reservation";
+}
+
+<h1 class="text-center">Create Reservation</h1>
+
+<form method="post" asp-controller="Reservations" asp-action="PassengersCount">
+
+    <div class="form-group col-4">
+        <label asp-for="Count">Count</label>
+        <input class="form-control" asp-for="Count" />
+        <span asp-validation-for="Count" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-primary mt-3" type="submit">Next</button>
+ </form>

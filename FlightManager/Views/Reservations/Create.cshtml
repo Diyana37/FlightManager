@@ -1,0 +1,73 @@
+﻿@using FlightManager.Data.Entities.Enums
+@model CreateReservationInputModel
+
+@{
+    this.ViewData["Title"] = "Create Reservation";
+}
+
+<h1 class="text-center">Create Reservation</h1>
+
+<form method="post" asp-controller="Reservations" asp-action="Create">
+
+    <input type="hidden" class="form-control" asp-for="Count" />
+
+    <div class="form-group col-4">
+        <label asp-for="Email">Email</label>
+        <input class="form-control" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    @for (int i = 0; i < this.Model.Count; i++)
+    {
+        <div class="row border p-3 my-3">
+            <h3 class="col-12">Passenger @(i + 1)</h3>
+
+            <div class="form-group col-4">
+                <label asp-for="Passengers[i].FirstName">First Name</label>
+                <input class="form-control" asp-for="Passengers[i].FirstName" />
+                <span asp-validation-for="Passengers[i].FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="Passengers[i].MiddleName">Middle Name</label>
+                <input class="form-control" asp-for="Passengers[i].MiddleName" />
+                <span asp-validation-for="Passengers[i].MiddleName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="Passengers[i].LastName">Last Name</label>
+                <input class="form-control" asp-for="Passengers[i].LastName"  />
+                <span asp-validation-for="Passengers[i].LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="Passengers[i].EGN">EGN</label>
+                <input class="form-control" asp-for="Passengers[i].EGN"  />
+                <span asp-validation-for="Passengers[i].EGN" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="Passengers[i].Phone">Phone Number</label>
+                <input class="form-control" asp-for="Passengers[i].Phone"   />
+                <span asp-validation-for="Passengers[i].Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="Passengers[i].Nationality">Nationality</label>
+                <input class="form-control" asp-for="Passengers[i].Nationality" />
+                <span asp-validation-for="Passengers[i].Nationality" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="Passengers[i].TicketType">Ticket Type</label>
+                <select class="form-control" asp-for="Passengers[i].TicketType">
+                    <option value="BUSINESS">Business</option>
+                    <option value="STANDARD">Standard</option>
+                </select>
+                <span asp-validation-for="Passengers[i].TicketType" class="text-danger"></span>
+            </div>
+        </div>
+    }
+
+    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+</form>

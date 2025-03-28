@@ -1,5 +1,6 @@
 ﻿using FlightManager.InputModels.Flights;
 using FlightManager.ViewModels.Flights;
+using FlightManager.ViewModels.Reservations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FlightManager.Interfaces
@@ -15,5 +16,9 @@ namespace FlightManager.Interfaces
         Task EditAsync(EditFlightInputModel editFlightInputModel);
 
         Task<EditFlightInputModel> GetByIdAsync(int id);
+
+        Task<IEnumerable<SelectListItem>> GetAllAsItemsAsync();
+
+        Task<FlightDetailsViewModel> GetDetailsAsync(int id);
     }
 }

@@ -1,0 +1,77 @@
+﻿@model ReservationDetailsViewModel
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation: @Model.Id</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .reservation-card {
+            max-width: 800px;
+            margin: auto;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .card-body {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h4 {
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+
+        .list-group-item {
+            border: none;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card shadow-lg reservation-card">
+            <div class="card-body text-center">
+                <h1 class="card-title">Reservation #@Model.Id</h1>
+                <p class="text-muted">Flight: @Model.Flight.From - @Model.Flight.To (@Model.Flight.UniqieId)</p>
+                <p class="text-muted">Email: @Model.Email</p>
+
+                <h4 class="mt-4">Passengers</h4>
+                <ul class="list-group list-group-flush">
+                    @foreach (var passenger in this.Model.Passengers)
+                    {
+                        <li class="list-group-item">
+                            <strong>@passenger.FirstName @passenger.MiddleName @passenger.LastName</strong><br>
+                            EGN: @passenger.EGN<br>
+                            Phone: @passenger.Phone<br>
+                            Nationality: @passenger.Nationality<br>
+                            Ticket Type: @passenger.TicketType
+                        </li>
+                    }
+                </ul>
+
+                <a class="btn btn-primary mt-4" asp-controller="Reservations" asp-action="All">Back</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

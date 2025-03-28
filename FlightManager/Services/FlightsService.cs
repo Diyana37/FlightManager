@@ -3,6 +3,9 @@ using FlightManager.Data.Entities;
 using FlightManager.InputModels.Flights;
 using FlightManager.Interfaces;
 using FlightManager.ViewModels.Flights;
+using FlightManager.ViewModels.Passengers;
+using FlightManager.ViewModels.Reservations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlightManager.Services
@@ -55,12 +58,27 @@ namespace FlightManager.Services
             flight.CapacityStandard = editFlightInputModel.CapacityStandard;
             flight.CapacityBusiness = editFlightInputModel.CapacityBusiness;
             flight.PilotName = editFlightInputModel.PilotName;
-            flight.To = editFlightInputModel.PilotName;
+            flight.To = editFlightInputModel.To;
             flight.UniqieId = editFlightInputModel.UniqieId;
             flight.Type = editFlightInputModel.Type;
 
             this.dbContext.Flights.Update(flight);
             await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetAllAsItemsAsync()
+        {
+            IEnumerable<SelectListItem> selectListItems = await this.dbContext.Flights
+                                        .OrderBy(f => f.UniqieId.ToLower())
+                                        .Select(i => new SelectListItem
+                                        {
+
+                                            Value = i.Id.ToString(),
+                                            Text = $"{i.From} - {i.To}({i.UniqieId})"
+                                        })
+                                        .ToListAsync();
+
+            return selectListItems;
         }
 
         public async Task<IEnumerable<FlightBasicViewModel>> GetAllAsync()
@@ -104,5 +122,50 @@ namespace FlightManager.Services
 
             return editFlightInputModel;
         }
+
+        public async Task<FlightDetailsViewModel> GetDetailsAsync(int id)
+        {
+            FlightDetailsViewModel flightDetailsViewModel = await this.dbContext.Flights
+                .Include(f => f.Reservations)
+                .Where(f => f.Id == id)
+                .Select(f => new FlightDetailsViewModel
+                {
+                    Id = f.Id,
+                    DepartureAt = f.DepartureAt,
+                    LandAt = f.LandAt,
+                    From = f.From,
+                    CapacityBusiness = f.CapacityBusiness,
+                    PilotName = f.PilotName,
+                    To = f.To,
+                    CapacityStandard = f.CapacityStandard,
+                    Type = f.Type,
+                    UniqieId = f.UniqieId,
+                    Reservations = f.Reservations
+                        .Select(r => new ReservationDetailsViewModel
+                        {
+                            Email = r.Email,
+                            Flight = r.Flight,
+                            FlightId = r.FlightId,
+                            Id = r.Id,
+                            Passengers = r.Passengers
+                            .Select(p => new PassengerViewModel
+                            {
+                                Id = p.Id,
+                                EGN = p.EGN,
+                                FirstName = p.FirstName,
+                                LastName = p.LastName,
+                                MiddleName = p.MiddleName,
+                                Nationality = p.Nationality,
+                                Phone = p.Phone,
+                                TicketType = p.TicketType
+                            }).ToList()
+
+                        }).ToList()
+                })
+                .FirstOrDefaultAsync();
+
+            return flightDetailsViewModel;
+        }
+
     }
 }

@@ -24,5 +24,6 @@ namespace FlightManager.ViewModels.Flights
         public int CapacityStandard { get; set; }
 
         public int CapacityBusiness { get; set; }
+
     }
 }

@@ -5,6 +5,10 @@ namespace FlightManager.Data.Entities
 {
     public class Flight
     {
+        public Flight()
+        {
+            this.Reservations = new HashSet<Reservation>();
+        }
         public int Id { get; set; }
 
         [Required]
@@ -42,5 +46,7 @@ namespace FlightManager.Data.Entities
         [Required]
         [Range(1, 400)]
         public int CapacityBusiness { get; set; }
+
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }

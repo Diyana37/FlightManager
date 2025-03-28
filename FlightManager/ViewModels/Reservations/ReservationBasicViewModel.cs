@@ -1,4 +1,7 @@
-﻿using FlightManager.Data.Entities.Enums;
+﻿using FlightManager.Data.Entities;
+using FlightManager.Data.Entities.Enums;
+using FlightManager.ViewModels.Flights;
+using FlightManager.ViewModels.Passengers;
 
 namespace FlightManager.ViewModels.Reservations
 {
@@ -7,5 +10,9 @@ namespace FlightManager.ViewModels.Reservations
         public int Id { get; set; }
 
         public string Email { get; set; }
+
+        public int FlightId { get; set; }
+
+        public Flight Flight { get; set; }
     }
 }

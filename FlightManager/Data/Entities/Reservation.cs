@@ -16,5 +16,10 @@ namespace FlightManager.Data.Entities
         public string Email { get; set; }
 
         public ICollection<Passenger> Passengers { get; set; }
+
+        [Required]
+        public int FlightId { get; set; }
+
+        public Flight Flight { get; set; }
     }
 }

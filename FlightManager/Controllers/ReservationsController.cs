@@ -11,10 +11,12 @@ namespace FlightManager.Controllers
     public class ReservationsController : Controller
     {
         private readonly IReservationsService reservationsService;
+        private readonly IFlightsService flightService;
 
-        public ReservationsController(IReservationsService reservationsService)
+        public ReservationsController(IReservationsService reservationsService, IFlightsService flightService)
         {
             this.reservationsService = reservationsService;
+            this.flightService = flightService;
         }
         public async Task<IActionResult> All()
         {
@@ -45,7 +47,7 @@ namespace FlightManager.Controllers
             return this.RedirectToAction("Create", "Reservations", new { count = createReservationInputModel.Count });
         }
 
-        public IActionResult Create(int count)
+        public async Task<IActionResult> Create(int count)
         {
             if (this.User.Identity.IsAuthenticated)
             {
@@ -54,6 +56,9 @@ namespace FlightManager.Controllers
 
             CreateReservationInputModel createReservationInputModel = new CreateReservationInputModel();
             createReservationInputModel.Count = count;
+
+            createReservationInputModel.FlightItems = await this.flightService
+                    .GetAllAsItemsAsync();
 
             for (int i = 0; i < count; i++)
             {
@@ -74,12 +79,35 @@ namespace FlightManager.Controllers
 
             if (!this.ModelState.IsValid)
             {
+                createReservationInputModel.FlightItems = await this.flightService
+                    .GetAllAsItemsAsync();
+
                 return this.View(createReservationInputModel);
             }
 
-            await this.reservationsService.CreateAsync(createReservationInputModel);
+            try
+            {
+                await this.reservationsService.CreateAsync(createReservationInputModel);
 
-            return this.RedirectToAction("All", "Reservations");
+                return this.RedirectToAction("All", "Reservations");
+            }
+            catch (Exception ex)
+            {
+                createReservationInputModel.FlightItems = await this.flightService
+                                    .GetAllAsItemsAsync();
+
+                this.TempData["ErrorMessage"] = ex.Message; 
+
+                return this.View(createReservationInputModel);
+            }
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            ReservationDetailsViewModel detailsViewModel = await this.reservationsService
+                .GetDetailsAsync(id);
+
+            return this.View(detailsViewModel);
         }
     }
 }

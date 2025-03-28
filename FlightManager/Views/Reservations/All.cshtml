@@ -1,16 +1,17 @@
 ﻿@model IEnumerable<ReservationBasicViewModel>
 
 @{
-    this.ViewData["Title"] = "All Passengers";
+    this.ViewData["Title"] = "All Reservations";
 }
 
-<h1 class="text-center">Passengers</h1>
+<h1 class="text-center">Reservations</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Email</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +20,9 @@
             <tr>
                 <td>@reservation.Id</td>
                 <td>@reservation.Email</td>
+            <td>
+                <a asp-controller="Reservations" asp-action="Details" asp-route-id="@reservation.Id" class="btn btn-primary">Details</a>
+            </td>
             </tr>
         }
     </tbody>

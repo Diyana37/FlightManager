@@ -217,7 +217,12 @@ namespace FlightManager.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FlightId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("FlightId");
 
                     b.ToTable("Reservations");
                 });
@@ -370,6 +375,17 @@ namespace FlightManager.Data.Migrations
                     b.Navigation("Reservation");
                 });
 
+            modelBuilder.Entity("FlightManager.Data.Entities.Reservation", b =>
+                {
+                    b.HasOne("FlightManager.Data.Entities.Flight", "Flight")
+                        .WithMany("Reservations")
+                        .HasForeignKey("FlightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Flight");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -419,6 +435,11 @@ namespace FlightManager.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FlightManager.Data.Entities.Flight", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("FlightManager.Data.Entities.Reservation", b =>

@@ -1,6 +1,7 @@
 ﻿using FlightManager.InputModels.Flights;
 using FlightManager.Interfaces;
 using FlightManager.ViewModels.Flights;
+using FlightManager.ViewModels.Reservations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -72,6 +73,15 @@ namespace FlightManager.Controllers
             await this.flightsService.DeleteAsync(id);
 
             return this.RedirectToAction("All", "Flights");
+        }
+
+        [Authorize(Roles = Constants.ADMINISTRATOR_ROLE)]
+        public async Task<IActionResult> Details(int id)
+        {
+            FlightDetailsViewModel detailsViewModel = await this.flightsService
+                .GetDetailsAsync(id);
+
+            return this.View(detailsViewModel);
         }
     }
 }

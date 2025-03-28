@@ -19,7 +19,11 @@
             <th scope="col">Pilot</th>
             <th scope="col">Standard Capacity</th>
             <th scope="col">Business Capacity</th>
-            <th scope="col">Actions</th>
+
+            @if (this.User.Identity.IsAuthenticated)
+            {
+                <th scope="col">Actions</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -36,11 +40,19 @@
                 <td>@flight.PilotName</td>
                 <td>@flight.CapacityStandard</td>
                 <td>@flight.CapacityBusiness</td>
-                <td>
-                    <a asp-controller="Flights" asp-action="Delete" asp-route-id="@flight.Id" class="btn btn-danger">Delete</a>
-                    <a asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.Id" class="btn btn-warning">Edit</a>
-                    <a asp-controller="Flights" asp-action="Details" asp-route-id="@flight.Id" class="btn btn-primary">Details</a>
-                </td>
+                
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <td>
+                        @if (this.User.IsInRole(Constants.ADMINISTRATOR_ROLE))
+                        {
+                            <a asp-controller="Flights" asp-action="Delete" asp-route-id="@flight.Id" class="btn btn-danger">Delete</a>
+                            <a asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.Id" class="btn btn-warning">Edit</a>
+                        }
+            
+                        <a asp-controller="Flights" asp-action="Details" asp-route-id="@flight.Id" class="btn btn-primary">Details</a>
+                    </td>
+                }
             </tr>
         }
     </tbody>

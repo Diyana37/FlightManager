@@ -15,7 +15,6 @@ namespace FlightManager.Controllers
             this.flightsService = flightsService;
         }
 
-        [Authorize(Roles = $"{Constants.ADMINISTRATOR_ROLE},{Constants.EMPLOYEE_ROLE}")]
         public async Task<IActionResult> All()
         {
             IEnumerable<FlightBasicViewModel> flightBasicViewModels = await this.flightsService
@@ -75,7 +74,7 @@ namespace FlightManager.Controllers
             return this.RedirectToAction("All", "Flights");
         }
 
-        [Authorize(Roles = Constants.ADMINISTRATOR_ROLE)]
+        [Authorize(Roles = $"{Constants.ADMINISTRATOR_ROLE},{Constants.EMPLOYEE_ROLE}")]
         public async Task<IActionResult> Details(int id)
         {
             FlightDetailsViewModel detailsViewModel = await this.flightsService

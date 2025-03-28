@@ -18,13 +18,14 @@ namespace FlightManager.Controllers
             this.reservationsService = reservationsService;
             this.flightService = flightService;
         }
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string emailFilter, int page = 1, int pageSize = 10)
         {
-            IEnumerable<ReservationBasicViewModel> reservationBasicViewModels = await this.reservationsService
-                .GetAllAsync();
+            var reservations = await this.reservationsService.GetAllAsync(emailFilter, page, pageSize);
 
-            return this.View(reservationBasicViewModels);
+            this.ViewBag.EmailFilter = emailFilter; // Store filter value to retain input in the view
+            return View(reservations);
         }
+
 
         public IActionResult PassengersCount()
         {

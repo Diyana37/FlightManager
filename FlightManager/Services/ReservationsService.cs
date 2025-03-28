@@ -4,6 +4,7 @@ using FlightManager.Data.Entities.Enums;
 using FlightManager.Data.Entities.Identity;
 using FlightManager.InputModels.Reservations;
 using FlightManager.Interfaces;
+using FlightManager.Utilities;
 using FlightManager.ViewModels.Flights;
 using FlightManager.ViewModels.Passengers;
 using FlightManager.ViewModels.Reservations;
@@ -104,18 +105,25 @@ namespace FlightManager.Services
             }
         }
 
-        public async Task<IEnumerable<ReservationBasicViewModel>> GetAllAsync()
+        public async Task<PaginatedList<ReservationBasicViewModel>> GetAllAsync(string emailFilter, int page, int pageSize)
         {
-            IEnumerable<ReservationBasicViewModel> reservations = await this.dbContext.Reservations
-                .Select(r => new ReservationBasicViewModel
-                {
-                    Id = r.Id,
-                    Email = r.Email
-                })
-                .ToListAsync();
+            var query = this.dbContext.Reservations.AsQueryable();
 
-            return reservations;
+            if (!string.IsNullOrEmpty(emailFilter))
+            {
+                query = query.Where(r => r.Email.Contains(emailFilter));
+            }
+
+            var filteredQuery = query.Select(r => new ReservationBasicViewModel
+            {
+                Id = r.Id,
+                Email = r.Email
+            });
+
+            return await PaginatedList<ReservationBasicViewModel>.CreateAsync(filteredQuery, page, pageSize);
         }
+
+
 
         public async Task<ReservationDetailsViewModel> GetDetailsAsync(int id)
         {

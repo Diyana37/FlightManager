@@ -1,10 +1,21 @@
-﻿@model IEnumerable<ReservationBasicViewModel>
+﻿@model PaginatedList<ReservationBasicViewModel>
 
 @{
     this.ViewData["Title"] = "All Reservations";
 }
 
 <h1 class="text-center">Reservations</h1>
+
+<form method="get" asp-action="All">
+    <div class="input-group mb-3">
+        <input type="text" name="emailFilter" class="form-control" placeholder="Search by email" value="@this.ViewBag.EmailFilter" />
+        <input type="hidden" name="page" value="1" />
+        <input type="hidden" name="pageSize" value="2" />
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a asp-action="All" asp-route-pageSize="2" class="btn btn-secondary">Clear</a>
+    </div>
+</form>
+
 
 <table class="table">
     <thead>
@@ -27,3 +38,29 @@
         }
     </tbody>
 </table>
+
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (this.Model.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-page="@(this.Model.Page - 1)" asp-route-pageSize="2">Previous</a>
+            </li>
+        }
+
+        @for (int i = 1; i <= this.Model.TotalPages; i++)
+        {
+            <li class="page-item @(this.Model.Page == i ? "active" : "")">
+                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-page="@i" asp-route-pageSize="2">@i</a>
+            </li>
+        }
+
+        @if (this.Model.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-page="@(this.Model.Page + 1)" asp-route-pageSize="2">Next</a>
+            </li>
+        }
+    </ul>
+</nav>

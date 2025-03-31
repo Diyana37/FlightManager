@@ -51,9 +51,16 @@
     <div class="container mt-5">
         <div class="card shadow-lg reservation-card">
             <div class="card-body text-center">
-                <h1 class="card-title">Flight #@Model.Id</h1>
-                <p class="text-muted">From: @Model.From</p>
-                <p class="text-muted">To: @Model.To</p>
+                <h1 class="card-title">Flight @Model.UniqieId (#@Model.Id)</h1>
+                <p>From: @Model.From</p>
+                <p>To: @Model.To</p>
+                <p>Departure: @Model.DepartureAt</p>
+                <p>
+                    Length: @((int)(Model.LandAt - Model.DepartureAt).TotalMinutes / 60)h
+                    @((int)(Model.LandAt - Model.DepartureAt).Minutes % 60)min
+                </p>
+                <p class="text-muted">Standard: @Model.CapacityStandard, Business: @Model.CapacityBusiness </p>
+                <p class="text-muted">Pilot: @Model.PilotName</p>
 
                 <h4 class="mt-4">Reservations</h4>
                 <ul class="list-group list-group-flush">
@@ -78,7 +85,7 @@
                     }
                 </ul>
 
-                <a class="btn btn-primary mt-4" asp-controller="Flights" asp-action="All">Back</a>
+                <a class="btn btn-primary mt-4" asp-controller="Flights" asp-action="All" asp-route-page="1" asp-route-pageSize="2">Back</a>
             </div>
         </div>
     </div>

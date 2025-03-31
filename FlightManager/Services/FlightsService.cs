@@ -2,6 +2,7 @@
 using FlightManager.Data.Entities;
 using FlightManager.InputModels.Flights;
 using FlightManager.Interfaces;
+using FlightManager.Utilities;
 using FlightManager.ViewModels.Flights;
 using FlightManager.ViewModels.Passengers;
 using FlightManager.ViewModels.Reservations;
@@ -100,6 +101,27 @@ namespace FlightManager.Services
                 .ToListAsync();
 
             return flights;
+        }
+
+        public async Task<PaginatedList<FlightBasicViewModel>> GetAllAsync(int page, int pageSize)
+        {
+            var query = this.dbContext.Flights.AsQueryable();
+
+            var filteredQuery = query.Select(f => new FlightBasicViewModel
+            {
+                DepartureAt = f.DepartureAt,
+                LandAt = f.LandAt,
+                From = f.From,
+                CapacityStandard = f.CapacityStandard,
+                CapacityBusiness = f.CapacityBusiness,
+                PilotName = f.PilotName,
+                To = f.To,
+                UniqieId = f.UniqieId,
+                Type = f.Type,
+                Id = f.Id
+            });
+
+            return await PaginatedList<FlightBasicViewModel>.CreateAsync(filteredQuery, page, pageSize);
         }
 
         public async Task<EditFlightInputModel> GetByIdAsync(int id)

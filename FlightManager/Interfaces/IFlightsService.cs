@@ -1,4 +1,5 @@
 ﻿using FlightManager.InputModels.Flights;
+using FlightManager.Utilities;
 using FlightManager.ViewModels.Flights;
 using FlightManager.ViewModels.Reservations;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,7 +10,7 @@ namespace FlightManager.Interfaces
     {
         Task CreateAsync(CreateFlightInputModel createFlightInputModel);
 
-        Task<IEnumerable<FlightBasicViewModel>> GetAllAsync();
+        Task<PaginatedList<FlightBasicViewModel>> GetAllAsync(int page, int pageSize);
 
         Task DeleteAsync(int id);
 

@@ -1,10 +1,17 @@
-﻿@model IEnumerable<FlightBasicViewModel>
+﻿@model PaginatedList<FlightBasicViewModel>
 
 @{
     this.ViewData["Title"] = "All Flights";
 }
 
 <h1 class="text-center">Flights</h1>
+
+<form method="get" asp-action="All">
+    <div class="input-group mb-3">
+        <input type="hidden" name="page" value="1" />
+        <input type="hidden" name="pageSize" value="2" />
+    </div>
+</form>
 
 <table class="table">
     <thead>
@@ -57,3 +64,30 @@
         }
     </tbody>
 </table>
+
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (this.Model.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="All" asp-route-page="@(this.Model.Page - 1)" asp-route-pageSize="2">Previous</a>
+            </li>
+        }
+
+        @for (int i = 1; i <= this.Model.TotalPages; i++)
+        {
+            <li class="page-item @(this.Model.Page == i ? "active" : "")">
+                <a class="page-link" asp-action="All"  asp-route-page="@i" asp-route-pageSize="2">@i</a>
+            </li>
+        }
+
+        @if (this.Model.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="All" asp-route-page="@(this.Model.Page + 1)" asp-route-pageSize="2">Next</a>
+            </li>
+        }
+    </ul>
+</nav>
+

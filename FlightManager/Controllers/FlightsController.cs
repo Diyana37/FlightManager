@@ -15,12 +15,11 @@ namespace FlightManager.Controllers
             this.flightsService = flightsService;
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int page = 1, int pageSize = 10)
         {
-            IEnumerable<FlightBasicViewModel> flightBasicViewModels = await this.flightsService
-                .GetAllAsync();
+            var flights = await this.flightsService.GetAllAsync(page, pageSize);
 
-            return this.View(flightBasicViewModels);
+            return View(flights);
         }
 
         [Authorize(Roles = Constants.ADMINISTRATOR_ROLE)]

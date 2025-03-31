@@ -12,7 +12,7 @@
         <input type="hidden" name="page" value="1" />
         <input type="hidden" name="pageSize" value="2" />
         <button type="submit" class="btn btn-primary">Search</button>
-        <a asp-action="All" asp-route-pageSize="2" class="btn btn-secondary">Clear</a>
+        <a asp-action="All" class="btn btn-secondary">Clear</a>
     </div>
 </form>
 
@@ -45,21 +45,21 @@
         @if (this.Model.HasPreviousPage)
         {
             <li class="page-item">
-                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-page="@(this.Model.Page - 1)" asp-route-pageSize="2">Previous</a>
+                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-page="@(this.Model.Page - 1)" >Previous</a>
             </li>
         }
 
         @for (int i = 1; i <= this.Model.TotalPages; i++)
         {
             <li class="page-item @(this.Model.Page == i ? "active" : "")">
-                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-page="@i" asp-route-pageSize="2">@i</a>
+                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-page="@i" >@i</a>
             </li>
         }
 
         @if (this.Model.HasNextPage)
         {
             <li class="page-item">
-                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-page="@(this.Model.Page + 1)" asp-route-pageSize="2">Next</a>
+                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-page="@(this.Model.Page + 1)" >Next</a>
             </li>
         }
     </ul>

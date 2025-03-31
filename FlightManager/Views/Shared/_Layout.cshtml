@@ -20,13 +20,17 @@
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
 						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Flights" asp-action="All" asp-route-page="1" asp-route-pageSize="2">Flights List</a>
+							<a class="nav-link text-dark" asp-area="" asp-controller="Flights" asp-action="All" asp-route-page="1" >Flights List</a>
 						</li>
 
 						@if (this.User.IsInRole(Constants.ADMINISTRATOR_ROLE))
 						{
 							<li class="nav-item">
 								<a class="nav-link text-dark" asp-area="" asp-controller="Flights" asp-action="Create">Create Flight</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="All" asp-route-page="1" >Users List</a>
 							</li>
 						}
 
@@ -37,7 +41,7 @@
 							</li>
 
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="All" asp-route-page="1" asp-route-pageSize="2">Reservations List</a>
+								<a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="All" asp-route-page="1" >Reservations List</a>
 							</li>
 						}
 					</ul>

@@ -1,0 +1,72 @@
+﻿@model PaginatedList<UserViewModel>
+
+@{
+    this.ViewData["Title"] = "All Users";
+}
+
+<h1 class="text-center">Users</h1>
+
+<form method="get" asp-action="All">
+    <div class="input-group mb-3 gap-3">
+        <input type="text" name="emailFilter" class="form-control" placeholder="Search by email" value="@this.ViewBag.EmailFilter" />
+        <input type="text" name="userNameFilter" class="form-control" placeholder="Search by username" value="@this.ViewBag.UserNameFilter" />
+        <input type="text" name="firstNameFilter" class="form-control" placeholder="Search by first name" value="@this.ViewBag.FirstNameFilter" />
+        <input type="text" name="lastNameFilter" class="form-control" placeholder="Search by last name" value="@this.ViewBag.LastNameFilter" />
+        <input type="hidden" name="page" value="1" />
+        <input type="hidden" name="pageSize" value="2" />
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a asp-action="All" class="btn btn-secondary">Clear</a>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in this.Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.FirstName</td>
+                <td>@user.LastName</td>
+                <td>@user.Phone</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (this.Model.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-userNameFilter="@this.ViewBag.UserNameFilter" asp-route-firstNameFilter="@this.ViewBag.FirstNameFilter" asp-route-lastNameFilter="@this.ViewBag.LastNameFilter" asp-route-page="@(this.Model.Page - 1)">Previous</a>
+            </li>
+        }
+
+        @for (int i = 1; i <= this.Model.TotalPages; i++)
+        {
+            <li class="page-item @(this.Model.Page == i ? "active" : "")">
+                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-userNameFilter="@this.ViewBag.UserNameFilter" asp-route-firstNameFilter="@this.ViewBag.FirstNameFilter" asp-route-lastNameFilter="@this.ViewBag.LastNameFilter" asp-route-page="@i">@i</a>
+            </li>
+        }
+
+        @if (this.Model.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="All" asp-route-emailFilter="@this.ViewBag.EmailFilter" asp-route-userNameFilter="@this.ViewBag.UserNameFilter" asp-route-firstNameFilter="@this.ViewBag.FirstNameFilter" asp-route-lastNameFilter="@this.ViewBag.LastNameFilter" asp-route-page="@(this.Model.Page + 1)" >Next</a>
+            </li>
+        }
+    </ul>
+</nav>

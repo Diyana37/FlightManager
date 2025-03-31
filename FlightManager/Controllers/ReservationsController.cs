@@ -18,7 +18,7 @@ namespace FlightManager.Controllers
             this.reservationsService = reservationsService;
             this.flightService = flightService;
         }
-        public async Task<IActionResult> All(string emailFilter, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> All(string emailFilter, int page = 1, int pageSize = 2)
         {
             var reservations = await this.reservationsService.GetAllAsync(emailFilter, page, pageSize);
 

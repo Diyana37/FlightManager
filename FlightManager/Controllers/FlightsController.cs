@@ -15,7 +15,7 @@ namespace FlightManager.Controllers
             this.flightsService = flightsService;
         }
 
-        public async Task<IActionResult> All(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> All(int page = 1, int pageSize = 2)
         {
             var flights = await this.flightsService.GetAllAsync(page, pageSize);
 

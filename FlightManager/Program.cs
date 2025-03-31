@@ -26,6 +26,7 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailS
 builder.Services.AddScoped<IFlightsService, FlightsService>();
 builder.Services.AddScoped<IReservationsService, ReservationsService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 var app = builder.Build();
 

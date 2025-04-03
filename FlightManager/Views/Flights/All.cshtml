@@ -1,93 +1,84 @@
 ﻿@model PaginatedList<FlightBasicViewModel>
 
 @{
-    this.ViewData["Title"] = "All Flights";
+	this.ViewData["Title"] = "All Flights";
 }
 
 <h1 class="text-center">Flights</h1>
 
 <form method="get" asp-action="All">
-    <div class="input-group mb-3">
-        <input type="hidden" name="page" value="1" />
-        <input type="hidden" name="pageSize" value="2" />
-    </div>
+	<div class="input-group mb-3">
+		<input type="hidden" name="page" value="1" />
+	</div>
 </form>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">From</th>
-            <th scope="col">To</th>
-            <th scope="col">Departure</th>
-            <th scope="col">Landing</th>
-            <th scope="col">Type</th>
-            <th scope="col">Flight ID</th>
-            <th scope="col">Pilot</th>
-            <th scope="col">Standard Capacity</th>
-            <th scope="col">Business Capacity</th>
+	<thead>
+		<tr>
+			<th scope="col">Id</th>
+			<th scope="col">From</th>
+			<th scope="col">To</th>
+			<th scope="col">Departure</th>
+			<th scope="col">Landing</th>
+			<th scope="col">Type</th>
+			<th scope="col">Flight ID</th>
+			<th scope="col">Pilot</th>
+			<th scope="col">Standard Capacity</th>
+			<th scope="col">Business Capacity</th>
+			<th scope="col">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var flight in this.Model)
+		{
+			<tr>
+				<td>@flight.Id</td>
+				<td>@flight.From</td>
+				<td>@flight.To</td>
+				<td>@flight.DepartureAt.ToString("yyyy-MM-dd HH:mm")</td>
+				<td>@flight.LandAt.ToString("yyyy-MM-dd HH:mm")</td>
+				<td>@flight.Type</td>
+				<td>@flight.UniqieId</td>
+				<td>@flight.PilotName</td>
+				<td>@flight.CapacityStandard</td>
+				<td>@flight.CapacityBusiness</td>
+				<td>
+					@if (this.User.IsInRole(Constants.ADMINISTRATOR_ROLE))
+					{
+						<a asp-controller="Flights" asp-action="Delete" asp-route-id="@flight.Id" class="btn btn-danger">Delete</a>
+						<a asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.Id" class="btn btn-warning">Edit</a>
+					}
 
-            @if (this.User.Identity.IsAuthenticated)
-            {
-                <th scope="col">Actions</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var flight in this.Model)
-        {
-            <tr>
-                <td>@flight.Id</td>
-                <td>@flight.From</td>
-                <td>@flight.To</td>
-                <td>@flight.DepartureAt.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@flight.LandAt.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@flight.Type</td>
-                <td>@flight.UniqieId</td>
-                <td>@flight.PilotName</td>
-                <td>@flight.CapacityStandard</td>
-                <td>@flight.CapacityBusiness</td>
-                
-                @if (this.User.Identity.IsAuthenticated)
-                {
-                    <td>
-                        @if (this.User.IsInRole(Constants.ADMINISTRATOR_ROLE))
-                        {
-                            <a asp-controller="Flights" asp-action="Delete" asp-route-id="@flight.Id" class="btn btn-danger">Delete</a>
-                            <a asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.Id" class="btn btn-warning">Edit</a>
-                        }
-            
-                        <a asp-controller="Flights" asp-action="Details" asp-route-id="@flight.Id" class="btn btn-primary">Details</a>
-                    </td>
-                }
-            </tr>
-        }
-    </tbody>
+					<a asp-controller="Flights" asp-action="Details" asp-route-id="@flight.Id" class="btn btn-primary">Details</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
 
 <!-- Pagination Controls -->
 <nav aria-label="Page navigation">
-    <ul class="pagination">
-        @if (this.Model.HasPreviousPage)
-        {
-            <li class="page-item">
-                <a class="page-link" asp-action="All" asp-route-page="@(this.Model.Page - 1)" >Previous</a>
-            </li>
-        }
+	<ul class="pagination">
+		@if (this.Model.HasPreviousPage)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-action="All" asp-route-page="@(this.Model.Page - 1)">Previous</a>
+			</li>
+		}
 
-        @for (int i = 1; i <= this.Model.TotalPages; i++)
-        {
-            <li class="page-item @(this.Model.Page == i ? "active" : "")">
-                <a class="page-link" asp-action="All"  asp-route-page="@i" >@i</a>
-            </li>
-        }
+		@for (int i = 1; i <= this.Model.TotalPages; i++)
+		{
+			<li class="page-item @(this.Model.Page == i ? "active" : "")">
+				<a class="page-link" asp-action="All" asp-route-page="@i">@i</a>
+			</li>
+		}
 
-        @if (this.Model.HasNextPage)
-        {
-            <li class="page-item">
-                <a class="page-link" asp-action="All" asp-route-page="@(this.Model.Page + 1)" >Next</a>
-            </li>
-        }
-    </ul>
+		@if (this.Model.HasNextPage)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-action="All" asp-route-page="@(this.Model.Page + 1)">Next</a>
+			</li>
+		}
+	</ul>
 </nav>
 

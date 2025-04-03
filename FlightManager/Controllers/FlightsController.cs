@@ -15,7 +15,7 @@ namespace FlightManager.Controllers
             this.flightsService = flightsService;
         }
 
-        public async Task<IActionResult> All(int page = 1, int pageSize = 2)
+        public async Task<IActionResult> All(int page = 1, int pageSize = 5)
         {
             var flights = await this.flightsService.GetAllAsync(page, pageSize);
 
@@ -73,7 +73,6 @@ namespace FlightManager.Controllers
             return this.RedirectToAction("All", "Flights");
         }
 
-        [Authorize(Roles = $"{Constants.ADMINISTRATOR_ROLE},{Constants.EMPLOYEE_ROLE}")]
         public async Task<IActionResult> Details(int id)
         {
             FlightDetailsViewModel detailsViewModel = await this.flightsService

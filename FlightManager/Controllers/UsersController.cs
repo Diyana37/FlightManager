@@ -16,7 +16,7 @@ namespace FlightManager.Controllers
         [Authorize(Roles = Constants.ADMINISTRATOR_ROLE)]
         public async Task<IActionResult> All
             (string emailFilter, string userNameFilter, string firstNameFilter,
-                string lastNameFilter, int page = 1, int pageSize = 2)
+                string lastNameFilter, int page = 1, int pageSize = 5)
         {
             var users = await this.usersService.
                 GetAllAsync(emailFilter, userNameFilter, firstNameFilter,
